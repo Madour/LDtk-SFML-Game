@@ -22,9 +22,9 @@ public:
 
     class Layer : public sf::Drawable{
         friend TileMap;
-        Layer(const TileMap& tilemap, const ldtk::Layer& layer);
-        const TileMap& m_map;
-        sf::Texture* m_texture;
+        Layer(const ldtk::Layer& layer, sf::RenderTexture& render_texture);
+        sf::Texture* m_tileset_texture;
+        sf::RenderTexture& m_render_texture;
         sf::VertexArray m_vertex_array;
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     };
@@ -33,7 +33,6 @@ public:
     auto getLayer(const std::string& name) const -> const Layer&;
 
 private:
-    sf::RenderTexture m_render_texture;
+    mutable sf::RenderTexture m_render_texture;
     std::map<std::string, Layer> m_layers;
 };
-

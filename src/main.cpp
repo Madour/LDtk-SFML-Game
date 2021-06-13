@@ -32,6 +32,19 @@ int main() {
             }
         }
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            view.move(0, -1);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            view.move(0, 1);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            view.move(-1, 0);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            view.move(1, 0);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add))
+            view.zoom(0.95f);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract))
+            view.zoom(1.05f);
+
         window.clear();
 
         window.setView(view);

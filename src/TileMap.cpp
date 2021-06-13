@@ -14,8 +14,8 @@ auto TileMap::Textures::get(const std::string& name) -> sf::Texture& {
     return instance().data.at(name);
 }
 
-TileMap::Layer::Layer(const TileMap& tilemap, const ldtk::Layer& layer) : m_map(tilemap) {
-    m_texture = &Textures::get(layer.getTileset().path);
+TileMap::Layer::Layer(const ldtk::Layer& layer, sf::RenderTexture& render_texture) : m_render_texture(render_texture) {
+    m_tileset_texture = &Textures::get(layer.getTileset().path);
     m_vertex_array.resize(layer.allTiles().size()*4);
     m_vertex_array.setPrimitiveType(sf::PrimitiveType::Quads);
     int i = 0;
@@ -31,8 +31,11 @@ TileMap::Layer::Layer(const TileMap& tilemap, const ldtk::Layer& layer) : m_map(
 }
 
 void TileMap::Layer::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    states.texture = m_texture;
-    target.draw(m_vertex_array, states);
+    states.texture = m_tileset_texture;
+    m_render_texture.clear(sf::Color::Transparent);
+    m_render_texture.draw(m_vertex_array, states);
+    m_render_texture.display();
+    target.draw(sf::Sprite(m_render_texture.getTexture()));
 }
 
 std::string TileMap::path;
@@ -40,9 +43,11 @@ std::string TileMap::path;
 TileMap::TileMap(const ldtk::Level& level) {
     for (auto& layer : level.allLayers()) {
         if (layer.getType() == ldtk::LayerType::AutoLayer) {
-            m_layers.insert({layer.getName(), {*this, layer}});
+            m_layers.insert({layer.getName(), {layer, m_render_texture}});
         }
     }
+    m_render_texture.create(level.size.x, level.size.y);
+    m_render_texture.draw(sf::VertexArray());
 }
 
 auto TileMap::getLayer(const std::string& name) const -> const Layer& {
