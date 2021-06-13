@@ -1,0 +1,8 @@
+build
+build-release
+build-debug
+.idea
+
+*.exe
+*.ilk
+*.pdb
