@@ -9,7 +9,7 @@
 		"url": "https://ldtk.io"
 	},
 	"jsonVersion": "0.9.3",
-	"nextUid": 52,
+	"nextUid": 55,
 	"worldLayout": "Free",
 	"worldGridWidth": 256,
 	"worldGridHeight": 256,
@@ -727,6 +727,75 @@
 			"pivotX": 0,
 			"pivotY": 0,
 			"fieldDefs": []
+		},
+		{
+			"identifier": "Player",
+			"uid": 52,
+			"tags": [],
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"keepAspectRatio": false,
+			"fillOpacity": 1,
+			"lineOpacity": 1,
+			"hollow": false,
+			"color": "#94D9B3",
+			"renderMode": "Cross",
+			"showName": true,
+			"tilesetId": null,
+			"tileId": null,
+			"tileRenderMode": "Stretch",
+			"maxCount": 1,
+			"limitScope": "PerWorld",
+			"limitBehavior": "PreventAdding",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": [
+				{
+					"identifier": "skin_color",
+					"__type": "Color",
+					"uid": 53,
+					"type": "F_Color",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Int", "params": [14736512] },
+					"textLanguageMode": null
+				},
+				{
+					"identifier": "name",
+					"__type": "String",
+					"uid": 54,
+					"type": "F_String",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": {
+						"id": "V_String",
+						"params": ["Hero"]
+					},
+					"textLanguageMode": null
+				}
+			]
 		}
 	], "tilesets": [
 		{
@@ -871,17 +940,6 @@
 						},
 						{
 							"__identifier": "Collider",
-							"__grid": [15,15],
-							"__pivot": [0,0],
-							"__tile": null,
-							"width": 16,
-							"height": 16,
-							"defUid": 51,
-							"px": [240,240],
-							"fieldInstances": []
-						},
-						{
-							"__identifier": "Collider",
 							"__grid": [17,0],
 							"__pivot": [0,0],
 							"__tile": null,
@@ -901,6 +959,48 @@
 							"defUid": 51,
 							"px": [0,0],
 							"fieldInstances": []
+						},
+						{
+							"__identifier": "Collider",
+							"__grid": [15,15],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 80,
+							"height": 16,
+							"defUid": 51,
+							"px": [240,240],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Collider",
+							"__grid": [9,4],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 32,
+							"height": 16,
+							"defUid": 51,
+							"px": [144,64],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Player",
+							"__grid": [11,16],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 52,
+							"px": [176,256],
+							"fieldInstances": [
+								{
+									"__identifier": "skin_color",
+									"__value": "#29EEFF",
+									"__type": "Color",
+									"defUid": 53,
+									"realEditorValues": [{ "id": "V_Int", "params": [2748159] }]
+								},
+								{ "__identifier": "name", "__value": "Hero", "__type": "String", "defUid": 54, "realEditorValues": [] }
+							]
 						}
 					]
 				},
