@@ -1001,6 +1001,94 @@
 								},
 								{ "__identifier": "name", "__value": "Hero", "__type": "String", "defUid": 54, "realEditorValues": [] }
 							]
+						},
+						{
+							"__identifier": "Collider",
+							"__grid": [4,5],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 48,
+							"height": 128,
+							"defUid": 51,
+							"px": [64,80],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Collider",
+							"__grid": [7,11],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 64,
+							"height": 32,
+							"defUid": 51,
+							"px": [112,176],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Collider",
+							"__grid": [0,12],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 64,
+							"height": 32,
+							"defUid": 51,
+							"px": [0,192],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Collider",
+							"__grid": [4,13],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 32,
+							"height": 16,
+							"defUid": 51,
+							"px": [64,208],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Collider",
+							"__grid": [3,11],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 51,
+							"px": [48,176],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Collider",
+							"__grid": [7,10],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 51,
+							"px": [112,160],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Collider",
+							"__grid": [5,4],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 32,
+							"height": 16,
+							"defUid": 51,
+							"px": [80,64],
+							"fieldInstances": []
+						},
+						{
+							"__identifier": "Collider",
+							"__grid": [12,11],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 144,
+							"height": 32,
+							"defUid": 51,
+							"px": [192,176],
+							"fieldInstances": []
 						}
 					]
 				},

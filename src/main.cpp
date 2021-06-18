@@ -1,7 +1,23 @@
 #include <iostream>
-
 #include "LDtkLoader/World.hpp"
 #include "TileMap.hpp"
+
+auto getPlayerCollider(sf::Shape& player) -> sf::FloatRect {
+    auto bounds = player.getGlobalBounds();
+    sf::FloatRect rect;
+    rect.left = bounds.left;
+    rect.width = bounds.width;
+    rect.top = bounds.top+bounds.height/2;
+    rect.height = bounds.height/2;
+    return rect;
+}
+
+auto getColliderShape(const sf::FloatRect& rect) -> sf::RectangleShape {
+    sf::RectangleShape r{{rect.width, rect.height}};
+    r.setPosition(rect.left, rect.top);
+    r.setFillColor({200, 0, 0, 95});
+    return r;
+}
 
 int main() {
     ldtk::World world;
@@ -37,8 +53,9 @@ int main() {
     auto& player_ent = entities_layer.getEntities("Player")[0];
     auto& player_color = player_ent.getField<ldtk::Color>("skin_color").value();
     // create player shape
-    sf::CircleShape player(8);
-    player.setPosition((float)player_ent.getPosition().x, (float)player_ent.getPosition().y);
+    sf::RectangleShape player({8, 16});
+    player.setOrigin(4, 16);
+    player.setPosition((float)player_ent.getPosition().x+8, (float)player_ent.getPosition().y+16);
     player.setFillColor({player_color.r, player_color.g, player_color.b});
 
     // create the window
@@ -54,40 +71,60 @@ int main() {
     // start game loop
     sf::Event event{};
     while(window.isOpen()) {
+        // EVENTS
         while(window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
         }
 
-        // move camera arrows
+        // UPDATE
+        // move player with arrows
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            view.move(0, -1.5);
+            player.move(0, -1.5);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-            view.move(0, 1.5);
+            player.move(0, 1.5);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            view.move(-1.5, 0);
+            player.move(-1.5, 0);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            view.move(1.5, 0);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add))
-            view.zoom(0.95f);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract))
-            view.zoom(1.05f);
+            player.move(1.5, 0);
 
-        // check for camera limits
-        // left X limit
+        // do collision checks
+        auto player_collider = getPlayerCollider(player);
+        for (auto& rect : collisions) {
+            sf::FloatRect intersect;
+            if (player_collider.intersects(rect, intersect)) {
+                if (intersect.width < intersect.height) {
+                    if (player_collider.left < intersect.left)
+                        player.move(-intersect.width, 0);
+                    else
+                        player.move(intersect.width, 0);
+                }
+                else {
+                    if (player_collider.top < intersect.top)
+                        player.move(0, -intersect.height);
+                    else
+                        player.move(0, intersect.height);
+                }
+                break;
+            }
+        }
+        player_collider = getPlayerCollider(player);
+
+        // update camera
+        view.setCenter(player.getPosition());
+        // check for camera X limit
         if (view.getCenter().x - view.getSize().x/2 < 0)
             view.setCenter(view.getSize().x/2, view.getCenter().y);
-        // right X limit
         else if (view.getCenter().x + view.getSize().x/2 > ldtk_level0.size.x)
             view.setCenter(ldtk_level0.size.x - view.getSize().x/2, view.getCenter().y);
-        // top Y limit
+        // check for camera Y limit
         if (view.getCenter().y - view.getSize().y/2 < 0)
             view.setCenter(view.getCenter().x, view.getSize().y/2);
-        // bottom Y limit
         else if (view.getCenter().y + view.getSize().y/2 > ldtk_level0.size.y)
             view.setCenter(view.getCenter().x, ldtk_level0.size.y - view.getSize().y/2);
 
+        // RENDER
         window.clear();
         window.setView(view);
 
@@ -97,21 +134,17 @@ int main() {
 
         // draw player
         window.draw(player);
+        window.draw(getColliderShape(player_collider));
 
         // draw map top layer
         window.draw(tilemap.getLayer("Trees_top"));
 
         // draw collisions
         for (auto& rect : collisions) {
-            sf::RectangleShape r{{rect.width, rect.height}};
-            r.setPosition(rect.left, rect.top);
-            r.setFillColor({200, 0, 0, 95});
-            window.draw(r);
+            window.draw(getColliderShape(rect));
         }
 
-        window.setView(window.getDefaultView());
         window.display();
     }
-
     return 0;
 }
