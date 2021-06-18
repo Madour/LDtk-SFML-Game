@@ -41,6 +41,11 @@ void TileMap::Layer::draw(sf::RenderTarget& target, sf::RenderStates states) con
 std::string TileMap::path;
 
 TileMap::TileMap(const ldtk::Level& level) {
+    load(level);
+}
+
+void TileMap::load(const ldtk::Level& level) {
+    m_layers.clear();
     for (auto& layer : level.allLayers()) {
         if (layer.getType() == ldtk::LayerType::AutoLayer) {
             m_layers.insert({layer.getName(), {layer, m_render_texture}});

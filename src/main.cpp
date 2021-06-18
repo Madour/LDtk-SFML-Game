@@ -21,8 +21,9 @@ auto getColliderShape(const sf::FloatRect& rect) -> sf::RectangleShape {
 
 int main() {
     ldtk::World world;
+    std::string ldtk_filename = "assets/maps/world1.ldtk";
     try {
-        world.loadFromFile("assets/maps/world1.ldtk");
+        world.loadFromFile(ldtk_filename);
         std::cout << "LDtk World \"" << world.getFilePath() << "\" was loaded successfully." << std::endl;
     }
     catch (std::exception& ex) {
@@ -70,11 +71,20 @@ int main() {
 
     // start game loop
     sf::Event event{};
+    bool show_colliders = false;
     while(window.isOpen()) {
         // EVENTS
         while(window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
+            }
+            if (event.type == sf::Event::KeyReleased) {
+                if (event.key.code == sf::Keyboard::F1)
+                    show_colliders = !show_colliders;
+                else if (event.key.code == sf::Keyboard::F5) {
+                    world.loadFromFile(ldtk_filename);
+                    tilemap.load(world.getLevel("Level_0"));
+                }
             }
         }
 
@@ -106,13 +116,12 @@ int main() {
                     else
                         player.move(0, intersect.height);
                 }
-                break;
             }
         }
         player_collider = getPlayerCollider(player);
 
         // update camera
-        view.setCenter(player.getPosition());
+        view.move((player.getPosition() - view.getCenter())/5.f);
         // check for camera X limit
         if (view.getCenter().x - view.getSize().x/2 < 0)
             view.setCenter(view.getSize().x/2, view.getCenter().y);
@@ -140,9 +149,9 @@ int main() {
         window.draw(tilemap.getLayer("Trees_top"));
 
         // draw collisions
-        for (auto& rect : collisions) {
-            window.draw(getColliderShape(rect));
-        }
+        if (show_colliders)
+            for (auto& rect : collisions)
+                window.draw(getColliderShape(rect));
 
         window.display();
     }

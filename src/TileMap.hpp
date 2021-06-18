@@ -29,7 +29,9 @@ public:
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     };
 
+    TileMap() = default;
     explicit TileMap(const ldtk::Level& level);
+    void load(const ldtk::Level& level);
     auto getLayer(const std::string& name) const -> const Layer&;
 
 private:
