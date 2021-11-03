@@ -43,16 +43,16 @@ int main() {
 
     // retrieve collider entities from entities layer and store them in the vector
     std::vector<sf::FloatRect> collisions;
-    for (auto& col : entities_layer.getEntities("Collider")) {
+    for (ldtk::Entity& col : entities_layer.getEntitiesByName("Collider")) {
         collisions.emplace_back(
                 (float)col.getPosition().x, (float)col.getPosition().y,
                 (float)col.getSize().x, (float)col.getSize().y
         );
     }
 
-    // get the Player entity, and its skin_color field
-    auto& player_ent = entities_layer.getEntities("Player")[0];
-    auto& player_color = player_ent.getField<ldtk::Color>("skin_color").value();
+    // get the Player entity, and its 'color' field
+    auto& player_ent = entities_layer.getEntitiesByName("Player")[0].get();
+    auto& player_color = player_ent.getField<ldtk::Color>("color").value();
     // create player shape
     sf::RectangleShape player({8, 16});
     player.setOrigin(4, 16);

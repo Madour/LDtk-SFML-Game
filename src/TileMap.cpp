@@ -35,7 +35,7 @@ void TileMap::Layer::draw(sf::RenderTarget& target, sf::RenderStates states) con
     m_render_texture.clear(sf::Color::Transparent);
     m_render_texture.draw(m_vertex_array, states);
     m_render_texture.display();
-    target.draw(sf::Sprite(m_render_texture.getTexture()));
+    target.draw(sf::Sprite(m_render_texture.getTexture()), states);
 }
 
 std::string TileMap::path;
@@ -46,13 +46,12 @@ TileMap::TileMap(const ldtk::Level& level) {
 
 void TileMap::load(const ldtk::Level& level) {
     m_layers.clear();
-    for (auto& layer : level.allLayers()) {
+    for (const auto& layer : level.allLayers()) {
         if (layer.getType() == ldtk::LayerType::AutoLayer) {
             m_layers.insert({layer.getName(), {layer, m_render_texture}});
         }
     }
     m_render_texture.create(level.size.x, level.size.y);
-    m_render_texture.draw(sf::VertexArray());
 }
 
 auto TileMap::getLayer(const std::string& name) const -> const Layer& {
