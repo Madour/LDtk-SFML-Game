@@ -1,8 +1,11 @@
-build
-build-release
-build-debug
 .idea
+.vs
+.vscode
+
+build
+build-*
 
 *.exe
 *.ilk
 *.pdb
+*.manifest

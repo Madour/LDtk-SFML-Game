@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <map>
+
 #include <SFML/Graphics.hpp>
 #include <LDtkLoader/Level.hpp>
 
@@ -30,7 +31,6 @@ public:
     };
 
     TileMap() = default;
-    explicit TileMap(const ldtk::Level& level);
     void load(const ldtk::Level& level);
     auto getLayer(const std::string& name) const -> const Layer&;
 

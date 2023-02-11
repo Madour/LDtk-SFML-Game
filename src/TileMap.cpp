@@ -21,10 +21,11 @@ TileMap::Layer::Layer(const ldtk::Layer& layer, sf::RenderTexture& render_textur
     int i = 0;
     for (const auto& tile : layer.allTiles()) {
         for (int j = 0; j < 4; ++j) {
-            m_vertex_array[i*4+j].position.x = tile.vertices[j].pos.x;
-            m_vertex_array[i*4+j].position.y = tile.vertices[j].pos.y;
-            m_vertex_array[i*4+j].texCoords.x = static_cast<float>(tile.vertices[j].tex.x);
-            m_vertex_array[i*4+j].texCoords.y = static_cast<float>(tile.vertices[j].tex.y);
+            auto vertices = tile.getVertices();
+            m_vertex_array[i*4+j].position.x = vertices[j].pos.x;
+            m_vertex_array[i*4+j].position.y = vertices[j].pos.y;
+            m_vertex_array[i*4+j].texCoords.x = static_cast<float>(vertices[j].tex.x);
+            m_vertex_array[i*4+j].texCoords.y = static_cast<float>(vertices[j].tex.y);
         }
         i++;
     }
@@ -40,18 +41,14 @@ void TileMap::Layer::draw(sf::RenderTarget& target, sf::RenderStates states) con
 
 std::string TileMap::path;
 
-TileMap::TileMap(const ldtk::Level& level) {
-    load(level);
-}
-
 void TileMap::load(const ldtk::Level& level) {
+    m_render_texture.create(level.size.x, level.size.y);
     m_layers.clear();
     for (const auto& layer : level.allLayers()) {
         if (layer.getType() == ldtk::LayerType::AutoLayer) {
             m_layers.insert({layer.getName(), {layer, m_render_texture}});
         }
     }
-    m_render_texture.create(level.size.x, level.size.y);
 }
 
 auto TileMap::getLayer(const std::string& name) const -> const Layer& {
