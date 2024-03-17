@@ -49,6 +49,7 @@ struct Game {
         auto& entities_layer = ldtk_level0.getLayer("Entities");
 
         // retrieve collider entities from entities layer and store them in the colliders vector
+        colliders.clear();
         for (ldtk::Entity& col : entities_layer.getEntitiesByName("Collider")) {
             colliders.emplace_back(
                 (float)col.getPosition().x, (float)col.getPosition().y,
@@ -114,22 +115,27 @@ struct Game {
         camera.move((player.getPosition() - camera.getCenter())/5.f);
 
         auto cam_size = camera.getSize();
-        auto cam_pos = camera.getCenter();
 
-        // check for camera X limit
-        if (cam_pos.x - cam_size.x / 2 < camera_bounds.left) {
-            camera.setCenter(camera_bounds.left + cam_size.x / 2, cam_pos.y);
-        }
-        else if (cam_pos.x + cam_size.x / 2 > camera_bounds.left + camera_bounds.width) {
-            camera.setCenter(camera_bounds.left + camera_bounds.width - cam_size.x / 2, cam_pos.y);
+        {
+            auto cam_pos = camera.getCenter();
+            // check for camera X limit
+            if (cam_pos.x - cam_size.x / 2 < camera_bounds.left) {
+                camera.setCenter(camera_bounds.left + cam_size.x / 2, cam_pos.y);
+            }
+            else if (cam_pos.x + cam_size.x / 2 > camera_bounds.left + camera_bounds.width) {
+                camera.setCenter(camera_bounds.left + camera_bounds.width - cam_size.x / 2, cam_pos.y);
+            }
         }
 
-        // check for camera Y limit
-        if (cam_pos.y - cam_size.y / 2 < camera_bounds.top) {
-            camera.setCenter(cam_pos.x, camera_bounds.top + cam_size.y / 2);
-        }
-        else if (cam_pos.y + cam_size.y / 2 > camera_bounds.top + camera_bounds.height) {
-            camera.setCenter(cam_pos.x, camera_bounds.top + camera_bounds.height - cam_size.y / 2);
+        {
+            auto cam_pos = camera.getCenter();
+            // check for camera Y limit
+            if (cam_pos.y - cam_size.y / 2 < camera_bounds.top) {
+                camera.setCenter(cam_pos.x, camera_bounds.top + cam_size.y / 2);
+            }
+            else if (cam_pos.y + cam_size.y / 2 > camera_bounds.top + camera_bounds.height) {
+                camera.setCenter(cam_pos.x, camera_bounds.top + camera_bounds.height - cam_size.y / 2);
+            }
         }
     }
 
@@ -139,21 +145,21 @@ struct Game {
         // draw map background layers
         target.draw(tilemap.getLayer("Ground"));
         target.draw(tilemap.getLayer("Trees"));
+        if (show_colliders) {
+            // draw map colliders
+            for (auto& rect : colliders)
+                target.draw(getColliderShape(rect));
+        }
 
         // draw player
         target.draw(player);
         if (show_colliders) {
+            // draw player collider
             target.draw(getColliderShape(getPlayerCollider(player)));
         }
 
         // draw map top layer
         target.draw(tilemap.getLayer("Trees_top"));
-
-        if (show_colliders) {
-            // draw colliders
-            for (auto& rect : colliders)
-                target.draw(getColliderShape(rect));
-        }
     }
 };
 

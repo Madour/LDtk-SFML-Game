@@ -10,11 +10,10 @@ A little project to show how to use LDtkLoader with SFML to render LDtk levels a
 
 You are free to use this code in your own game.
 
-
 ### Dependencies
 
-- [SFML](https://github.com/SFML/SFML)
-- [LDtkLoader](https://github.com/Madour/LDtkLoader)
+- [SFML](https://github.com/SFML/SFML), needs to be installed on your system
+- [LDtkLoader](https://github.com/Madour/LDtkLoader), automatically fetched by cmake
 
 ### Build
 

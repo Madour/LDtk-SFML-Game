@@ -2,6 +2,9 @@
 .vs
 .vscode
 
+_build
+_build-*
+
 build
 build-*
 
